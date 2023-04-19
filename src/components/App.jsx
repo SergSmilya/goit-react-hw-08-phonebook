@@ -1,18 +1,10 @@
-import { useSelector } from 'react-redux';
-import Contacts from './Contacts/Contacts';
-import ContactForm from './ContactForm/ContactForm';
-import Filter from './Filter/Filter';
+import { Route, Routes } from 'react-router-dom';
+import RegisterPage from 'Pages/RegisterPage';
+import LoginPage from 'Pages/LoginPage';
+import ContactsPage from 'Pages/ContactsPage';
+import SharedLayout from './SharedLayout/SharedLayout';
 
 export default function App() {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
-
-  const onFilterSearch = () => {
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter)
-    );
-  };
-
   return (
     <div
       style={{
@@ -22,12 +14,14 @@ export default function App() {
         color: '#010101',
       }}
     >
-      <h1>Phonebook</h1>
-      <ContactForm />
-
-      <h2>Contacts</h2>
-      <Filter />
-      <Contacts contacts={onFilterSearch()} />
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route path="register" element={<RegisterPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="contacts" element={<ContactsPage />} />
+          <Route path="*" element={<SharedLayout />} />
+        </Route>
+      </Routes>
     </div>
   );
 }

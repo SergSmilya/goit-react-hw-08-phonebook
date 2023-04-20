@@ -3,8 +3,17 @@ import RegisterPage from 'Pages/RegisterPage';
 import LoginPage from 'Pages/LoginPage';
 import ContactsPage from 'Pages/ContactsPage';
 import SharedLayout from './SharedLayout/SharedLayout';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { refreshUser } from 'redux/auth/operations';
 
 export default function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+
   return (
     <div
       style={{

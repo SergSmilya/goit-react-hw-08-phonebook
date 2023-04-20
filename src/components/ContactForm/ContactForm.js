@@ -1,7 +1,7 @@
 import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContact } from 'redux/contacts/contactsOperation';
 
 export default function ContactForm() {
   const contacts = useSelector(state => state.contacts);

@@ -14,7 +14,12 @@ const authSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(register.pending, (state, _) => {})
-      .addCase(register.fulfilled, (state, action) => {})
+      .addCase(register.fulfilled, (state, { payload: { user, token } }) => ({
+        ...state,
+        user,
+        token,
+        isLoggedIn: true,
+      }))
       .addCase(register.rejected, (state, action) => {})
 
       .addCase(logIn.pending, (state, _) => {})
@@ -34,6 +39,7 @@ const authSlice = createSlice({
       .addCase(refreshUser.fulfilled, (state, action) => ({
         ...state,
         user: action.payload,
+        isLoggedIn: true,
       }))
       .addCase(refreshUser.rejected, (state, action) => {});
   },

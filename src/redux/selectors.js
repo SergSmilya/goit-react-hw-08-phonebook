@@ -1,2 +1,10 @@
 export const setlectUserName = state => state.persistedReducer.user.name;
 export const selectLoggedIn = state => state.persistedReducer.isLoggedIn;
+export const selectIsRefreshing = state => state.persistedReducer.isRefreshing;
+export const selectToken = state => state.persistedReducer.token;
+export const selectErrorAuth = state => state.persistedReducer.error;
+export const selectIsLoadingAuth = state => state.persistedReducer.isLoading;
+export const selectFilter = state => state.filter;
+export const selectContacts = state => state.contacts.items;
+export const selectErrorContacts = state => state.contacts.error;
+export const selectIsLoadingContacts = state => state.contacts.isLoading;

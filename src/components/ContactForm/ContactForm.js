@@ -2,9 +2,10 @@ import { Formik, Form, Field } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contacts/contactsOperation';
+import { selectContacts } from 'redux/selectors';
 
 export default function ContactForm() {
-  const contacts = useSelector(state => state.contacts);
+  const contacts = useSelector(selectContacts);
   const dispatch = useDispatch();
 
   function handleSubmit(values, { resetForm }) {

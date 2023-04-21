@@ -4,11 +4,12 @@ import Filter from 'components/Filter/Filter';
 import { fetchContacts } from 'redux/contacts/contactsOperation';
 import { useEffect } from 'react';
 import ContactForm from 'components/ContactForm/ContactForm';
+import { selectContacts, selectFilter, selectToken } from 'redux/selectors';
 
 export default function ContactsPage() {
-  const contacts = useSelector(state => state.contacts);
-  const filter = useSelector(state => state.filter);
-  const token = useSelector(state => state.persistedReducer.token);
+  const contacts = useSelector(selectContacts);
+  const filter = useSelector(selectFilter);
+  const token = useSelector(selectToken);
 
   const dispatch = useDispatch();
 

@@ -1,47 +1,59 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, isAnyOf } from '@reduxjs/toolkit';
 import { logIn, logOut, refreshUser, register } from './operations';
+import { initialStateAuth } from './authInitialState';
 
-const initialState = {
-  user: { name: null, email: null },
-  token: null,
-  isLoggedIn: false,
-  isRefreshing: false,
-};
+const handlePending = (state, _) => ({ ...state, isLoading: true });
+const handleFulfilled = (state, { payload: { user, token } }) => ({
+  ...state,
+  user,
+  token,
+  isLoggedIn: true,
+  isLoading: false,
+});
+const handleRejected = (state, { payload }) => ({
+  ...state,
+  isLoading: false,
+  error: payload,
+});
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: initialStateAuth,
   extraReducers: builder => {
     builder
-      .addCase(register.pending, (state, _) => {})
-      .addCase(register.fulfilled, (state, { payload: { user, token } }) => ({
-        ...state,
-        user,
-        token,
-        isLoggedIn: true,
-      }))
-      .addCase(register.rejected, (state, action) => {})
+      .addCase(register.fulfilled, handleFulfilled)
 
-      .addCase(logIn.pending, (state, _) => {})
-      .addCase(logIn.fulfilled, (state, { payload: { user, token } }) => ({
-        ...state,
-        user,
-        token,
-        isLoggedIn: true,
-      }))
-      .addCase(logIn.rejected, (state, action) => {})
+      .addCase(logIn.fulfilled, handleFulfilled)
 
-      .addCase(logOut.pending, (state, _) => {})
-      .addCase(logOut.fulfilled, () => initialState)
-      .addCase(logOut.rejected, (state, action) => {})
+      .addCase(logOut.fulfilled, () => initialStateAuth)
 
-      .addCase(refreshUser.pending, (state, _) => {})
-      .addCase(refreshUser.fulfilled, (state, action) => ({
+      .addCase(refreshUser.fulfilled, (state, { payload }) => ({
         ...state,
-        user: action.payload,
+        user: payload,
         isLoggedIn: true,
+        isRefreshing: true,
+        isLoading: false,
       }))
-      .addCase(refreshUser.rejected, (state, action) => {});
+
+      .addMatcher(
+        isAnyOf(
+          register.pending,
+          logIn.pending,
+          logOut.pending,
+          refreshUser.pending
+        ),
+        handlePending
+      )
+
+      .addMatcher(
+        isAnyOf(
+          register.rejected,
+          logIn.rejected,
+          logOut.rejected,
+          refreshUser.rejected
+        ),
+        handleRejected
+      );
   },
 });
 

@@ -5,6 +5,7 @@ import { refreshUser } from 'redux/auth/operations';
 import SharedLayout from './SharedLayout/SharedLayout';
 import RestrictedRoute from './RestrictedRoute';
 import PublicRoute from './PublicRoute';
+import { Container } from '@mui/material';
 
 const RegisterPage = lazy(() => import('Pages/RegisterPage'));
 const LoginPage = lazy(() => import('Pages/LoginPage'));
@@ -18,14 +19,7 @@ export default function App() {
   }, [dispatch]);
 
   return (
-    <div
-      style={{
-        height: '100%',
-        display: 'block',
-        fontSize: 20,
-        color: '#010101',
-      }}
-    >
+    <Container fixed>
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
           <Route path="/" element={<SharedLayout />}>
@@ -54,7 +48,7 @@ export default function App() {
           </Route>
         </Routes>
       </Suspense>
-    </div>
+    </Container>
   );
 }
 

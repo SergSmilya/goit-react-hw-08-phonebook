@@ -1,7 +1,9 @@
+import { Button } from '@mui/material';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'redux/auth/operations';
 import * as Yup from 'yup';
+import SendIcon from '@mui/icons-material/Send';
 
 const LogInSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -42,7 +44,15 @@ export default function LogInForm() {
           <label htmlFor="password">Password</label>
           <Field id="password" name="password" />
           <ErrorMessage component="div" name="name" />
-          <button type="submit">LogIn</button>
+          <Button
+            variant="outlined"
+            type="submit"
+            disableElevation
+            color="secondary"
+            endIcon={<SendIcon />}
+          >
+            LogIn
+          </Button>
         </Form>
       </Formik>
     </div>

@@ -4,19 +4,19 @@ import AuthNav from 'components/AuthNav/AuthNav';
 import { useSelector } from 'react-redux';
 import { selectLoggedIn } from 'redux/selectors';
 import UserMenu from 'components/UserMenu/UserMenu';
+import MenuAppBar from 'components/MUI/MenuAppBar';
 
 export default function SharedLayout() {
   const isLoggedIn = useSelector(selectLoggedIn);
   return (
     <>
       <header>
+        <MenuAppBar />
         <nav>
           <Navigation />
           {isLoggedIn ? <UserMenu /> : <AuthNav />}
         </nav>
-        <h1>Phonebook</h1>
       </header>
-
       <Outlet />
     </>
   );

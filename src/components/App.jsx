@@ -1,3 +1,4 @@
+// ===================================================
 import { Route, Routes } from 'react-router-dom';
 import { Suspense, lazy, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -51,9 +52,3 @@ export default function App() {
     </Container>
   );
 }
-
-// 2. Стилізаця
-// 3. Обробка помилок
-// 4. Рендер за умовою
-// 5. Додати isLoadin...
-// 7. Передивитись де дублюється код та винести його в окрему функцію

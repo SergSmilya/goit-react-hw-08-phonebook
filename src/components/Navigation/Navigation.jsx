@@ -4,9 +4,9 @@ export default function Navigation() {
   return (
     <div>
       <ul>
-        <li>
+        {/* <li>
           <NavLink to="/">Home</NavLink>
-        </li>
+        </li> */}
         <li>
           <NavLink to="/contacts">Contacts</NavLink>
         </li>

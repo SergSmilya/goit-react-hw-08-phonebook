@@ -1,9 +1,19 @@
-import { Button } from '@mui/material';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { useDispatch } from 'react-redux';
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
+import { useFormik } from 'formik';
+import { useDispatch, useSelector } from 'react-redux';
 import { logIn } from 'redux/auth/operations';
 import * as Yup from 'yup';
 import SendIcon from '@mui/icons-material/Send';
+import { LoadingButton } from '@mui/lab';
+import { selectIsLoadingContacts } from 'redux/selectors';
+import { useState } from 'react';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const LogInSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
@@ -14,47 +24,84 @@ const LogInSchema = Yup.object().shape({
 });
 
 export default function LogInForm() {
+  const isLoading = useSelector(selectIsLoadingContacts);
   const dispatch = useDispatch();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(show => !show);
+
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+    },
+    validationSchema: LogInSchema,
+    onSubmit: (values, { resetForm }) => {
+      dispatch(logIn(values));
+      resetForm();
+    },
+  });
 
   return (
     <div>
-      <h1>LogIn</h1>
-
-      <Formik
-        initialValues={{
-          email: '',
-          password: '',
-        }}
-        validationSchema={LogInSchema}
-        onSubmit={(values, { resetForm }) => {
-          dispatch(logIn(values));
-          resetForm();
-        }}
-      >
-        <Form>
-          <label htmlFor="Email">Email</label>
-          <Field
-            id="Email"
-            type="email"
-            name="email"
-            placeholder="jane@acme.com"
-            autoFocus
-          />{' '}
-          <ErrorMessage component="div" name="name" />
-          <label htmlFor="password">Password</label>
-          <Field id="password" name="password" />
-          <ErrorMessage component="div" name="name" />
-          <Button
+      <Typography align="center" component={'h2'} variant="h4" mb={2}>
+        LogIn
+      </Typography>
+      <form onSubmit={formik.handleSubmit}>
+        <Box mb={1} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <TextField
             variant="outlined"
-            type="submit"
-            disableElevation
-            color="secondary"
-            endIcon={<SendIcon />}
-          >
-            LogIn
-          </Button>
-        </Form>
-      </Formik>
+            fullWidth
+            id="email"
+            name="email"
+            label="Email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            helperText={formik.touched.email && formik.errors.email}
+            placeholder="Enter email"
+          />
+
+          <TextField
+            sx={{ mb: 1 }}
+            variant="outlined"
+            fullWidth
+            id="password"
+            email="password"
+            label="Password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            helperText={formik.touched.password && formik.errors.password}
+            placeholder="Enter password"
+            type={showPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
+
+        <LoadingButton
+          color="primary"
+          size="medium"
+          variant="outlined"
+          endIcon={<SendIcon />}
+          loading={isLoading}
+          loadingPosition="end"
+          type="submit"
+          fullWidth
+        >
+          LogIn
+        </LoadingButton>
+      </form>
     </div>
   );
 }

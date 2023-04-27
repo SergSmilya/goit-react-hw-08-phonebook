@@ -1,4 +1,3 @@
-// ===================================================
 import { Route, Routes } from 'react-router-dom';
 import { Suspense, lazy, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -52,3 +51,5 @@ export default function App() {
     </Container>
   );
 }
+
+// Обработка помилок валідаціі

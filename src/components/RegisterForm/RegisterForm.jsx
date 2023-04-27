@@ -1,12 +1,19 @@
-// import { Button } from '@mui/material';
-// import { Formik, Field, Form, ErrorMessage, useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { register } from 'redux/auth/operations';
 import * as Yup from 'yup';
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { TextField } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  InputAdornment,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useFormik } from 'formik';
+import { useState } from 'react';
+import { selectIsLoadingContacts } from 'redux/selectors';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -22,6 +29,11 @@ const SignupSchema = Yup.object().shape({
 
 export default function RegisterForm() {
   const dispatch = useDispatch();
+  const isLoading = useSelector(selectIsLoadingContacts);
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleClickShowPassword = () => setShowPassword(show => !show);
 
   const formik = useFormik({
     initialValues: {
@@ -38,52 +50,74 @@ export default function RegisterForm() {
 
   return (
     <div>
-      <h1>Sign Up</h1>
+      <Typography align="center" component={'h2'} variant="h4" mb={2}>
+        Sign Up
+      </Typography>
 
       <form onSubmit={formik.handleSubmit}>
-        <TextField
-          fullWidth
-          id="name"
-          name="name"
-          label="Name"
-          margin="normal"
-          value={formik.values.name}
-          onChange={formik.handleChange}
-          error={formik.touched.name && Boolean(formik.errors.name)}
-          helperText={formik.touched.name && formik.errors.name}
-        />
+        <Box mb={1} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <TextField
+            fullWidth
+            variant="outlined"
+            id="name"
+            name="name"
+            label="Name"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            error={formik.touched.name && Boolean(formik.errors.name)}
+            helperText={formik.touched.name && formik.errors.name}
+            placeholder="Enter Name"
+          />
 
-        <TextField
-          fullWidth
-          id="email"
-          name="email"
-          label="Email"
-          type="email"
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-        />
+          <TextField
+            fullWidth
+            id="email"
+            name="email"
+            label="Email"
+            type="email"
+            variant="outlined"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            placeholder="Enter Email"
+          />
 
-        <TextField
-          fullWidth
-          id="password"
-          name="password"
-          label="Password"
-          margin="normal"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-        />
+          <TextField
+            fullWidth
+            id="password"
+            name="password"
+            label="Password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            placeholder="Enter password"
+            type={showPassword ? 'text' : 'password'}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Box>
 
         <LoadingButton
-          loading={false}
+          loading={isLoading}
           size="large"
-          loadingPosition="start"
-          startIcon={<AppRegistrationOutlinedIcon />}
+          loadingPosition="end"
+          endIcon={<AppRegistrationOutlinedIcon />}
           variant="outlined"
           type="submit"
+          fullWidth
         >
           Registration
         </LoadingButton>
@@ -91,69 +125,3 @@ export default function RegisterForm() {
     </div>
   );
 }
-
-// export default function RegisterForm() {
-//   const dispatch = useDispatch();
-
-//   return (
-//     <div>
-//       <h1>Sign Up</h1>
-
-//       <Formik
-//         initialValues={{
-//           name: '',
-//           email: '',
-//           password: '',
-//         }}
-//         validationSchema={SignupSchema}
-//         onSubmit={(values, { resetForm }) => {
-//           resetForm();
-//           dispatch(register(values));
-//         }}
-//       >
-//         {({ errors, touched }) => (
-//           <Form>
-//             <TextField id="filled-basic" label="Filled" variant="filled" />
-//             <label htmlFor="Name">Name</label>
-//             <Field id="Name" name="name" placeholder="Jane" autoFocus />
-//             <ErrorMessage component="div" name="name" />
-
-//             <label htmlFor="Email">Email</label>
-//             <Field
-//               id="Email"
-//               type="email"
-//               name="email"
-//               placeholder="jane@acme.com"
-//             />
-//             <ErrorMessage component="div" name="email" />
-
-//             <label htmlFor="password">Password</label>
-//             <Field id="password" name="password" />
-//             <ErrorMessage component="div" name="password" />
-
-//             {/* <Button
-//               variant="outlined"
-//               size="large"
-//               endIcon={<AppRegistrationOutlinedIcon />}
-//               fontSize="large"
-//               type="submit"
-//             >
-//               Registration
-//             </Button> */}
-
-//             <LoadingButton
-//               loading={false}
-//               size="large"
-//               loadingPosition="start"
-//               startIcon={<AppRegistrationOutlinedIcon />}
-//               variant="outlined"
-//               type="submit"
-//             >
-//               Registration
-//             </LoadingButton>
-//           </Form>
-//         )}
-//       </Formik>
-//     </div>
-//   );
-// }

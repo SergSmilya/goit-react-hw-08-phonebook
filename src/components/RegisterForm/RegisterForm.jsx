@@ -4,15 +4,17 @@ import * as Yup from 'yup';
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {
+  Alert,
   Box,
   IconButton,
   InputAdornment,
+  Snackbar,
   TextField,
   Typography,
 } from '@mui/material';
 import { useFormik } from 'formik';
-import { useState } from 'react';
-import { selectIsLoadingContacts } from 'redux/selectors';
+import { useEffect, useState } from 'react';
+import { selectErrorAuth, selectIsLoadingContacts } from 'redux/selectors';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const SignupSchema = Yup.object().shape({
@@ -28,10 +30,19 @@ const SignupSchema = Yup.object().shape({
 });
 
 export default function RegisterForm() {
+  const messageErrorAuth = useSelector(selectErrorAuth);
+  const [isShowSnack, setIsShowSnack] = useState(false);
   const dispatch = useDispatch();
   const isLoading = useSelector(selectIsLoadingContacts);
 
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (messageErrorAuth) setIsShowSnack(true);
+    return;
+  }, [messageErrorAuth]);
+
+  const handleCloseSnack = () => setIsShowSnack(false);
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
 
@@ -122,6 +133,14 @@ export default function RegisterForm() {
           Registration
         </LoadingButton>
       </form>
+
+      <Snackbar
+        open={isShowSnack}
+        autoHideDuration={3000}
+        onClose={handleCloseSnack}
+      >
+        <Alert severity="error">{messageErrorAuth}</Alert>
+      </Snackbar>
     </div>
   );
 }

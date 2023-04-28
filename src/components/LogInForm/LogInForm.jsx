@@ -1,7 +1,9 @@
 import {
+  Alert,
   Box,
   IconButton,
   InputAdornment,
+  Snackbar,
   TextField,
   Typography,
 } from '@mui/material';
@@ -11,8 +13,8 @@ import { logIn } from 'redux/auth/operations';
 import * as Yup from 'yup';
 import SendIcon from '@mui/icons-material/Send';
 import { LoadingButton } from '@mui/lab';
-import { selectIsLoadingContacts } from 'redux/selectors';
-import { useState } from 'react';
+import { selectIsLoadingContacts, selectErrorAuth } from 'redux/selectors';
+import { useEffect, useState } from 'react';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const LogInSchema = Yup.object().shape({
@@ -25,8 +27,18 @@ const LogInSchema = Yup.object().shape({
 
 export default function LogInForm() {
   const isLoading = useSelector(selectIsLoadingContacts);
+  const messageErrorAuth = useSelector(selectErrorAuth);
+  const [isShowSnack, setIsShowSnack] = useState(false);
+
   const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
+
+  useEffect(() => {
+    if (messageErrorAuth) setIsShowSnack(true);
+    return;
+  }, [messageErrorAuth]);
+
+  const handleCloseSnack = () => setIsShowSnack(false);
 
   const handleClickShowPassword = () => setShowPassword(show => !show);
 
@@ -102,6 +114,13 @@ export default function LogInForm() {
           LogIn
         </LoadingButton>
       </form>
+      <Snackbar
+        open={isShowSnack}
+        autoHideDuration={3000}
+        onClose={handleCloseSnack}
+      >
+        <Alert severity="error">{messageErrorAuth}</Alert>
+      </Snackbar>
     </div>
   );
 }

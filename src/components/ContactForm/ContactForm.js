@@ -51,6 +51,7 @@ export default function ContactForm() {
             id="name"
             name="name"
             label="Name"
+            type="text"
             value={formik.values.name}
             onChange={formik.handleChange}
             helperText={formik.touched.name && formik.errors.name}
@@ -63,10 +64,12 @@ export default function ContactForm() {
             id="number"
             name="number"
             label="Number"
+            type="number"
             value={formik.values.number}
             onChange={formik.handleChange}
             helperText={formik.touched.number && formik.errors.number}
             placeholder="Enter number"
+            error={!formik.isValid}
           />
         </Box>
         <LoadingButton

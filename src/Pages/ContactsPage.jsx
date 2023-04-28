@@ -5,7 +5,7 @@ import { fetchContacts } from 'redux/contacts/contactsOperation';
 import React, { useEffect } from 'react';
 import ContactForm from 'components/ContactForm/ContactForm';
 import { selectContacts, selectFilter, selectToken } from 'redux/selectors';
-import { Alert, Button, Snackbar, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 
 export default function ContactsPage() {
   const contacts = useSelector(selectContacts);
@@ -24,15 +24,6 @@ export default function ContactsPage() {
     );
   };
 
-  const [open, setOpen] = React.useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
   return (
     <div>
       <Typography
@@ -49,26 +40,6 @@ export default function ContactsPage() {
 
       <Filter />
       <Contacts contacts={onFilterSearch()} />
-
-      <Snackbar open={false} autoHideDuration={9000}>
-        <Alert severity="warning" sx={{ width: '100%' }}>
-          Alert
-        </Alert>
-      </Snackbar>
-
-      <div>
-        <Button onClick={handleClick}>Open simple snackbar</Button>
-        <Snackbar
-          open={open}
-          autoHideDuration={2000}
-          onClose={handleClose}
-          message="Note archived"
-        >
-          <Alert severity="warning" sx={{ width: '100%' }}>
-            Alert
-          </Alert>
-        </Snackbar>
-      </div>
     </div>
   );
 }

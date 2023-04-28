@@ -8,3 +8,5 @@ export const selectFilter = state => state.filter;
 export const selectContacts = state => state.contacts.items;
 export const selectErrorContacts = state => state.contacts.error;
 export const selectIsLoadingContacts = state => state.contacts.isLoading;
+export const selectDeletedContact = state => state.contacts.deletedContact.name;
+export const selectAddContact = state => state.contacts.addContact;

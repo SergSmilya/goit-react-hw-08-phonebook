@@ -1,6 +1,7 @@
 import { List } from '@mui/material';
 import PropTypes from 'prop-types';
 import ContactItem from 'components/ContactItem/ContactItem';
+import React from 'react';
 
 export default function Contacts({ contacts }) {
   return (

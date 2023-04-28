@@ -6,7 +6,12 @@ import {
 } from './contacts/contactsOperation';
 import { initialStateCotacts } from './contacts/contactsInitialState';
 
-const handlePending = (state, _) => ({ ...state, isLoading: true });
+const handlePending = (state, _) => ({
+  ...state,
+  isLoading: true,
+  deletedContact: {},
+  addContact: {},
+});
 const handleRejected = (state, { payload }) => ({
   ...state,
   isLoading: false,
@@ -26,12 +31,14 @@ export const contactsSlice = createSlice({
 
       .addCase(addContact.fulfilled, (state, { payload }) => ({
         ...state,
+        addContact: { ...payload },
         items: [...state.items, payload],
         isLoading: false,
       }))
 
       .addCase(deleteContact.fulfilled, (state, { payload }) => ({
         ...state,
+        deletedContact: { ...payload },
         items: [...state.items.filter(contact => contact.id !== payload.id)],
         isLoading: false,
       }))

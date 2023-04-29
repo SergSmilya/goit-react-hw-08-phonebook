@@ -5,6 +5,7 @@ import {
   Link,
   Menu,
   MenuItem,
+  MenuList,
   Toolbar,
 } from '@mui/material';
 import { useRef, useState } from 'react';
@@ -63,32 +64,33 @@ export default function MenuAppBar() {
               onClose={handleCloseBaseMenu}
             >
               {!isLoggedIn && (
-                <MenuItem onClick={handleCloseBaseMenu}>
-                  <Link
-                    to="/register"
-                    component={RouterLink}
-                    variant="h6"
-                    color="inherit"
-                    underline="none"
-                    sx={{ flexGrow: 1, width: 200 }}
-                  >
-                    Regitsration
-                  </Link>
-                </MenuItem>
-              )}
-              {!isLoggedIn && (
-                <MenuItem onClick={handleCloseBaseMenu}>
-                  <Link
-                    to="/login"
-                    component={RouterLink}
-                    variant="h6"
-                    color="inherit"
-                    underline="none"
-                    sx={{ flexGrow: 1, width: 200 }}
-                  >
-                    LogIn
-                  </Link>
-                </MenuItem>
+                <MenuList>
+                  <MenuItem onClick={handleCloseBaseMenu}>
+                    <Link
+                      to="/register"
+                      component={RouterLink}
+                      variant="h6"
+                      color="inherit"
+                      underline="none"
+                      sx={{ flexGrow: 1, width: 200 }}
+                    >
+                      Regitsration
+                    </Link>
+                  </MenuItem>
+
+                  <MenuItem onClick={handleCloseBaseMenu}>
+                    <Link
+                      to="/login"
+                      component={RouterLink}
+                      variant="h6"
+                      color="inherit"
+                      underline="none"
+                      sx={{ flexGrow: 1, width: 200 }}
+                    >
+                      LogIn
+                    </Link>
+                  </MenuItem>
+                </MenuList>
               )}
               <MenuItem onClick={handleCloseBaseMenu}>
                 <Link

@@ -65,6 +65,43 @@ export default function MenuAppBar() {
             >
               {!isLoggedIn && (
                 <MenuList>
+                  <Link
+                    to="/register"
+                    component={RouterLink}
+                    variant="h6"
+                    color="inherit"
+                    underline="none"
+                    sx={{ flexGrow: 1, width: 200 }}
+                  >
+                    <MenuItem onClick={handleCloseBaseMenu}>
+                      Regitsration
+                    </MenuItem>
+                  </Link>
+
+                  <Link
+                    to="/login"
+                    component={RouterLink}
+                    variant="h6"
+                    color="inherit"
+                    underline="none"
+                    sx={{ flexGrow: 1, width: 200 }}
+                  >
+                    <MenuItem onClick={handleCloseBaseMenu}>LogIn</MenuItem>
+                  </Link>
+                </MenuList>
+              )}
+              <Link
+                to="/contacts"
+                component={RouterLink}
+                variant="h6"
+                color="inherit"
+                underline="none"
+                sx={{ flexGrow: 1, width: 200 }}
+              >
+                <MenuItem onClick={handleCloseBaseMenu}>Contacts</MenuItem>{' '}
+              </Link>
+              {/* {!isLoggedIn && (
+                <MenuList>
                   <MenuItem onClick={handleCloseBaseMenu}>
                     <Link
                       to="/register"
@@ -103,7 +140,7 @@ export default function MenuAppBar() {
                 >
                   Contacts
                 </Link>
-              </MenuItem>
+              </MenuItem> */}
             </Menu>
           </div>
 
